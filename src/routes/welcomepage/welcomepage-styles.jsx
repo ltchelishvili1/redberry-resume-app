@@ -4,7 +4,6 @@ import WelcomeBackgroundImage from "../../assets/back.png";
 
 export const WelcomePageContainer = styled.div`
   padding: 25px 70px;
-  width: 100%;
   height: 100vh;
   box-sizing: border-box;
   background-image: url(${WelcomeBackgroundImage});
@@ -21,11 +20,6 @@ export const LogoContainer = styled.div`
   display: grid;
 `;
 
-export const Line = styled.span`
-  width: 100%;
-  border: 1px solid #1a1a1a;
-  margin-top: 26px;
-`;
 
 export const Button = styled.button`
   position: absolute;
@@ -38,5 +32,6 @@ export const Button = styled.button`
   color: white;
   font-size: 20px;
   font-weight: 500;
+  cursor: pointer;
   border-radius: 8px;
 `;
