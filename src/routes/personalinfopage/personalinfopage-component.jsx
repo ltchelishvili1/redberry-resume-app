@@ -1,6 +1,14 @@
 import React from "react";
 import Input from "../../components/input/input-component";
 import {
+  VALIDATOR_EMAIL,
+  VALIDATOR_GEORGIAN,
+  VALIDATOR_MINLENGTH,
+  VALIDATOR_PHONENUMBER,
+  VALIDATOR_REQUIRE,
+  VALIDATOR_VALID,
+} from "../../utils/validation/validation";
+import {
   CustomLine,
   NameSurnameContainer,
   PersonalInfoPageCont,
@@ -21,6 +29,11 @@ const PersonalInfoPage = () => {
           placeholder={"ანზორ"}
           label="სახელი"
           errorText={"მინიმუმ 2 ასო, ქართული ასოები"}
+          validators={[
+            VALIDATOR_REQUIRE(),
+            VALIDATOR_MINLENGTH(),
+            VALIDATOR_GEORGIAN(),
+          ]}
         />{" "}
         <Input
           element={"input"}
@@ -28,6 +41,11 @@ const PersonalInfoPage = () => {
           placeholder={"მუმლაძე"}
           label="გვარი"
           errorText={"მინიმუმ 2 ასო, ქართული ასოები"}
+          validators={[
+            VALIDATOR_REQUIRE(),
+            VALIDATOR_MINLENGTH(),
+            VALIDATOR_GEORGIAN(),
+          ]}
         />
       </NameSurnameContainer>
       <UploadContainer>
@@ -43,10 +61,11 @@ const PersonalInfoPage = () => {
 
       <Input
         element={"input"}
-        type="text"
+        type="email"
         placeholder={"anzor666@redberry.ge"}
         label="ელ.ფოსტა"
         errorText={"მინიმუმ 2 ასო, ქართული ასოები"}
+        validators={[VALIDATOR_REQUIRE(), VALIDATOR_EMAIL()]}
       />
       <Input
         element={"input"}
@@ -54,6 +73,7 @@ const PersonalInfoPage = () => {
         placeholder={"+995 551 12 34 56"}
         label="მობილურის ნომერი"
         errorText={"მინიმუმ 2 ასო, ქართული ასოები"}
+        validators={[VALIDATOR_REQUIRE(), VALIDATOR_PHONENUMBER()]}
       />
     </PersonalInfoPageCont>
   );

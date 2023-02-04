@@ -1,20 +1,31 @@
 import React, { useReducer, useEffect } from "react";
+import { validate } from "../../utils/validation/validation";
 import {
   ErrorText,
+  Image,
+  InputFieldContainer,
   InputStyled,
   Label,
   MainContainer,
+  Span,
   TextAreaStyled,
 } from "./input-styles";
 
-const FormReducer = (state, action) => {
+import InvalidInput from "../../assets/Vector.png";
 
+const FormReducer = (state, action) => {
   switch (action.type) {
     case "Change": {
       return {
         ...state,
         value: action.val,
-        //  isValid: validate(action.val, action.validators)
+        isValid: validate(action.val, action.validators),
+      };
+    }
+    case "TOUCH": {
+      return {
+        ...state,
+        isTouched: true,
       };
     }
     default:
@@ -28,46 +39,71 @@ const INITIAL_STATE = {
   isTouched: false,
 };
 
-const Input = ({ element, id, type, placeholder, label, errorText, rows }) => {
+const Input = ({
+  element,
+  id,
+  type,
+  placeholder,
+  label,
+  errorText,
+  rows,
+  validators,
+}) => {
   const [formState, dispatch] = useReducer(FormReducer, INITIAL_STATE);
   console.log(formState);
   const changeHandler = (event) => {
     dispatch({
       type: "Change",
       val: event.target.value,
-      //   validators: props.validators
+      validators: validators || [],
+    });
+  };
+
+  const touchHandler = () => {
+    dispatch({
+      type: "TOUCH",
     });
   };
 
   const el =
     element === "input" ? (
-      <InputStyled
-        id={id}
-        type={type}
-        placeholder={placeholder}
-        onChange={changeHandler}
-       
-        value={formState.value}
-      />
+      <InputFieldContainer>
+        <InputStyled
+          id={id}
+          type={type}
+          placeholder={placeholder}
+          onChange={changeHandler}
+          onBlur={touchHandler}
+          value={formState.value}
+          isValid={formState.isValid}
+          isTouched={formState.isTouched}
+        />
+        {formState.isTouched && !formState.isValid && (
+          <Span>
+            <Image src={InvalidInput} alt="notvalid" />
+          </Span>
+        )}
+      </InputFieldContainer>
     ) : (
       <TextAreaStyled
         id={id}
         rows={(rows && rows) || 1}
         placeholder={placeholder}
-      
+        onChange={changeHandler}
+        onBlur={touchHandler}
+        value={formState.value}
+        isValid={formState.isValid}
+        isTouched={formState.isTouched}
       />
     );
 
   return (
-    <MainContainer
- 
-    >
-      <Label htmlFor={id}>{label}</Label>
+    <MainContainer>
+      <Label notValid={!formState.isValid && formState.isTouched && validators} htmlFor={id}>
+        {label}
+      </Label>
       {el}
-      {
-        
-        errorText && <ErrorText>{errorText}</ErrorText>
-      }
+      {errorText && <ErrorText>{errorText}</ErrorText>}
     </MainContainer>
   );
 };
