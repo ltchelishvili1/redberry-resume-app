@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const PersonalInfoPageCont = styled.div`
   display: block;
   padding: 47px 150px;
-
 `;
 
 export const CustomLine = styled.h1`
@@ -31,8 +30,17 @@ export const UploadTittle = styled.h1`
 `;
 
 export const UploadContainer = styled.div`
- height: 22px;
- padding: 8px 0 31px 0;
+  height: 22px;
+  padding: 8px 0 31px 0;
   display: flex;
   align-items: center;
+`;
+
+export const UploadImage = styled.label`
+  background: #0e80bf;
+  color: white;
+  padding: 0.3rem 1.2rem;
+  margin-left: 19px;
+  border-radius: 4px;
+  font-size: 14px;
 `;

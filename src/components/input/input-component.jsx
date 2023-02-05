@@ -1,5 +1,5 @@
-import React, { useReducer, useEffect } from "react";
-import { validate } from "../../utils/validation/validation";
+import React, { useReducer, useEffect, useContext } from "react";
+
 import {
   ErrorText,
   Image,
@@ -13,30 +13,15 @@ import {
 
 import InvalidInput from "../../assets/Vector.png";
 
-const FormReducer = (state, action) => {
-  switch (action.type) {
-    case "Change": {
-      return {
-        ...state,
-        value: action.val,
-        isValid: validate(action.val, action.validators),
-      };
-    }
-    case "TOUCH": {
-      return {
-        ...state,
-        isTouched: true,
-      };
-    }
-    default:
-      return state;
-  }
-};
+import { FormContext } from "../../contexts/formcontext";
+
+import { FormReducer } from "../../reducers/formreducer/formreducer";
 
 const INITIAL_STATE = {
   value: "",
   isValid: false,
   isTouched: false,
+  name: "",
 };
 
 const Input = ({
@@ -48,13 +33,18 @@ const Input = ({
   errorText,
   rows,
   validators,
+  name,
+  initialValid,
 }) => {
+  const { stateChanger, state } = useContext(FormContext);
+  
   const [formState, dispatch] = useReducer(FormReducer, INITIAL_STATE);
-  console.log(formState);
+
   const changeHandler = (event) => {
     dispatch({
       type: "Change",
-      val: event.target.value,
+      val: element == "file" ? event.target.files[0] : event.target.value,
+      name: name,
       validators: validators || [],
     });
   };
@@ -65,6 +55,19 @@ const Input = ({
     });
   };
 
+  useEffect(() => {
+    if (!validators) {
+      dispatch({
+        type: "IsValid",
+        val: initialValid,
+      });
+    }
+  }, []);
+  useEffect(() => {
+    stateChanger(formState);
+  }, [formState]);
+
+  // console.log(state)
   const el =
     element === "input" ? (
       <InputFieldContainer>
@@ -84,6 +87,15 @@ const Input = ({
           </Span>
         )}
       </InputFieldContainer>
+    ) : element === "file" ? (
+      <input
+        type="file"
+        id="img"
+        accept="image/png, image/jpeg"
+        style={{ display: "none" }}
+        onChange={changeHandler}
+        onBlur={touchHandler}
+      />
     ) : (
       <TextAreaStyled
         id={id}
@@ -99,7 +111,10 @@ const Input = ({
 
   return (
     <MainContainer>
-      <Label notValid={!formState.isValid && formState.isTouched && validators} htmlFor={id}>
+      <Label
+        notValid={!formState.isValid && formState.isTouched && validators}
+        htmlFor={id}
+      >
         {label}
       </Label>
       {el}
