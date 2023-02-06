@@ -37,7 +37,7 @@ const Input = ({
   initialValid,
 }) => {
   const { stateChanger, state } = useContext(FormContext);
-  
+
   const [formState, dispatch] = useReducer(FormReducer, INITIAL_STATE);
 
   const changeHandler = (event) => {
@@ -67,7 +67,6 @@ const Input = ({
     stateChanger(formState);
   }, [formState]);
 
-
   const el =
     element === "input" ? (
       <InputFieldContainer>
@@ -77,7 +76,7 @@ const Input = ({
           placeholder={placeholder}
           onChange={changeHandler}
           onBlur={touchHandler}
-          value={formState.value}
+          value={state[name] && state[name].value}
           isValid={formState.isValid}
           isTouched={formState.isTouched}
         />

@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
+
+import { useNavigate } from "react-router-dom";
+
 import Input from "../../components/input/input-component";
+import Button from "../../components/button/button-component";
+
 import {
   VALIDATOR_EMAIL,
   VALIDATOR_GEORGIAN,
   VALIDATOR_MINLENGTH,
   VALIDATOR_PHONENUMBER,
   VALIDATOR_REQUIRE,
-  VALIDATOR_VALID,
 } from "../../utils/validation/validation";
 import {
   CustomLine,
@@ -17,8 +21,19 @@ import {
   UploadImage,
   UploadTittle,
 } from "./personalinfopage-styles";
+import { FormContext } from "../../contexts/formcontext";
 
 const PersonalInfoPage = () => {
+  const navigate = useNavigate();
+
+  const { validateFinalForm } = useContext(FormContext);
+
+  const handleClick = () => {
+    if (validateFinalForm(6)) {
+      navigate('/ji')
+    }
+  };
+
   return (
     <PersonalInfoPageCont>
       <Tittle>პირადი ინფო</Tittle>
@@ -30,7 +45,7 @@ const PersonalInfoPage = () => {
           placeholder={"ანზორ"}
           label="სახელი"
           errorText={"მინიმუმ 2 ასო, ქართული ასოები"}
-          name = 'name'
+          name="name"
           validators={[
             VALIDATOR_REQUIRE(),
             VALIDATOR_MINLENGTH(),
@@ -43,7 +58,7 @@ const PersonalInfoPage = () => {
           placeholder={"მუმლაძე"}
           label="გვარი"
           errorText={"მინიმუმ 2 ასო, ქართული ასოები"}
-          name = 'surname'
+          name="surname"
           validators={[
             VALIDATOR_REQUIRE(),
             VALIDATOR_MINLENGTH(),
@@ -55,7 +70,7 @@ const PersonalInfoPage = () => {
         <UploadTittle>პირადი ფოტოს ატვირთვა</UploadTittle>
         <UploadImage for="img">ატვირთვა</UploadImage>
         <span>
-          <Input element={"file"}  name = 'image'/>
+          <Input element={"file"} name="image" />
         </span>
       </UploadContainer>
       <Input
@@ -64,7 +79,7 @@ const PersonalInfoPage = () => {
         placeholder={"ზოგადი ინფო შენ შესახებ"}
         label="ჩემ შესახებ (არასავალდებულო)"
         initialValid={true}
-        name = 'personalDescription'
+        name="personalDescription"
       />
 
       <Input
@@ -72,8 +87,8 @@ const PersonalInfoPage = () => {
         type="email"
         placeholder={"anzor666@redberry.ge"}
         label="ელ.ფოსტა"
-        errorText={"მინიმუმ 2 ასო, ქართული ასოები"}
-        name='email'
+        errorText={"უნდა მთავრდებოდეს @redberry.ge-ით"}
+        name="email"
         validators={[VALIDATOR_REQUIRE(), VALIDATOR_EMAIL()]}
       />
       <Input
@@ -81,10 +96,11 @@ const PersonalInfoPage = () => {
         type="text"
         placeholder={"+995 551 12 34 56"}
         label="მობილურის ნომერი"
-        errorText={"მინიმუმ 2 ასო, ქართული ასოები"}
-        name='number'
+        errorText={"უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს"}
+        name="number"
         validators={[VALIDATOR_REQUIRE(), VALIDATOR_PHONENUMBER()]}
       />
+      <Button text={"შემდეგი"} onClick={handleClick} />
     </PersonalInfoPageCont>
   );
 };

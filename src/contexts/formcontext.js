@@ -1,21 +1,57 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const FormContext = createContext({
   state: {},
   stateChanger: () => {},
+  validateFinalForm: () => {},
 });
 
 export const FormContextProvider = ({ children }) => {
-  const [state, setState] = useState({});
-  let isValid = true;
+  const [state, setState] = useState(
+    JSON.parse(localStorage.getItem("state")) || {}
+  );
+
+  useEffect(() => {
+    localStorage.setItem("state", JSON.stringify(state));
+  }, [state]);
+
   const stateChanger = (vals) => {
-    isValid = vals.isValid;
-    setState({ ...state, [vals.name]: vals.value });
+    if (vals.name === "") return;
+    if (vals.name === "image") {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setState({
+          ...state,
+          [vals.name]: {
+            value: reader.result,
+            isValid: vals.isValid,
+          },
+        });
+      });
+      reader.readAsDataURL(vals.value);
+    } else {
+      setState({
+        ...state,
+        [vals.name]: {
+          value: vals.value,
+          isValid: vals.isValid,
+        },
+      });
+    }
+  };
+
+  const validateFinalForm = (amountOfFormInputs) => {
+    return Object.keys(state).length < amountOfFormInputs
+      ? false
+      : Object.keys(state)
+          .map((key) => state[key].isValid)
+          .every((el) => el === true);
   };
 
   const value = {
     state,
     stateChanger,
+    validateFinalForm,
   };
   return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
 };
