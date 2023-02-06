@@ -67,7 +67,7 @@ const Input = ({
     stateChanger(formState);
   }, [formState]);
 
-  // console.log(state)
+
   const el =
     element === "input" ? (
       <InputFieldContainer>

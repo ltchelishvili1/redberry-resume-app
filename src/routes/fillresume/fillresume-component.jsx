@@ -1,18 +1,17 @@
 import React from "react";
-import {
-  FillResumeContainer,
-  FormContainer,
-  ResumeContainer,
-} from "./fillresume-styles";
-import { Route, Routes, Navigate, Link, useLocation, Outlet } from "react-router-dom";
+import { FillResumeContainer, ResumeContainer } from "./fillresume-styles";
+import { Outlet } from "react-router-dom";
+import DisplayPage from "../../components/displaypage/displaypage-component";
 
 const FillResume = () => {
   return (
     <FillResumeContainer>
-       <Outlet />
-      <ResumeContainer>12345</ResumeContainer>
+      <Outlet />
+      <ResumeContainer>
+        <DisplayPage />
+      </ResumeContainer>
     </FillResumeContainer>
   );
-}
+};
 
 export default FillResume;
