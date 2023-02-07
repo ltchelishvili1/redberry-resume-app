@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useContext } from "react";
+import React, { useReducer, useEffect, useContext, useState } from "react";
 
 import {
   ErrorText,
@@ -16,12 +16,14 @@ import InvalidInput from "../../assets/Vector.png";
 import { FormContext } from "../../contexts/formcontext";
 
 import { FormReducer } from "../../reducers/formreducer/formreducer";
+import { ExperienceContext } from "../../contexts/experiencecontext";
 
 const INITIAL_STATE = {
   value: "",
   isValid: false,
   isTouched: false,
   name: "",
+  sectionName: "default",
 };
 
 const Input = ({
@@ -35,8 +37,25 @@ const Input = ({
   validators,
   name,
   initialValid,
+  styles,
+  sectionName,
+  count,
+  countArr,
 }) => {
   const { stateChanger, state } = useContext(FormContext);
+  const { experienceState, experienceStateChanger } =
+    useContext(ExperienceContext);
+  let value = state[name] || "";
+
+  if (sectionName === "experience") {
+    if (
+      experienceState &&
+      experienceState[count] &&
+      experienceState[count][name]
+    ) {
+      value = experienceState[count][name];
+    }
+  }
 
   const [formState, dispatch] = useReducer(FormReducer, INITIAL_STATE);
 
@@ -46,6 +65,7 @@ const Input = ({
       val: element == "file" ? event.target.files[0] : event.target.value,
       name: name,
       validators: validators || [],
+      sectionName: sectionName ? sectionName : "default",
     });
   };
 
@@ -64,9 +84,18 @@ const Input = ({
     }
   }, []);
   useEffect(() => {
-    stateChanger(formState);
-  }, [formState]);
+    switch (formState.sectionName) {
+      case "default":
+        stateChanger(formState);
 
+      case "experience":
+        experienceStateChanger(formState, count, countArr);
+      default:
+    }
+
+    if (formState.sectionName === "default") {
+    }
+  }, [formState]);
   const el =
     element === "input" ? (
       <InputFieldContainer>
@@ -76,11 +105,12 @@ const Input = ({
           placeholder={placeholder}
           onChange={changeHandler}
           onBlur={touchHandler}
-          value={state[name] && state[name].value}
-          isValid={formState.isValid}
-          isTouched={formState.isTouched}
+          value={value && value.value}
+          isValid={value && value.isValid}
+          isTouched={value && value.isTouched}
+          style={{ ...styles }}
         />
-        {formState.isTouched && !formState.isValid && (
+        {value && value.isTouched && !value.isValid && (
           <Span>
             <Image src={InvalidInput} alt="notvalid" />
           </Span>
@@ -102,16 +132,17 @@ const Input = ({
         placeholder={placeholder}
         onChange={changeHandler}
         onBlur={touchHandler}
-        value={formState.value}
-        isValid={formState.isValid}
-        isTouched={formState.isTouched}
+        value={value && value.value}
+        isValid={value && value.isValid}
+        isTouched={value && value.isTouched}
+        style={{ ...styles }}
       />
     );
 
   return (
     <MainContainer>
       <Label
-        notValid={!formState.isValid && formState.isTouched && validators}
+        notValid={value && !value.isValid && value.isTouched && validators}
         htmlFor={id}
       >
         {label}

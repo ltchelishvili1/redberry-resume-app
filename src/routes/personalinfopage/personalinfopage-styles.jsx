@@ -12,7 +12,7 @@ export const CustomLine = styled.h1`
 
 export const Tittle = styled.h1`
   font-size: 27px;
-  line-height: 29px;
+  margin-bottom: 0;
 `;
 
 export const NameSurnameContainer = styled.div`
@@ -20,7 +20,7 @@ export const NameSurnameContainer = styled.div`
   gap: 56px;
   align-items: center;
   justify-content: space-around;
-  margin-top: 46px;
+ 
 `;
 
 export const UploadTittle = styled.h1`
@@ -44,3 +44,17 @@ export const UploadImage = styled.label`
   border-radius: 4px;
   font-size: 14px;
 `;
+
+export const TittleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const PageNum = styled.span`
+  color: #1A1A1A;
+  font-size: 20px;
+  font-weight: 400;
+  transform: translateY(50%);
+ 
+`

@@ -38,7 +38,7 @@ export const InputStyled = styled.input`
           border: 1px solid #ef5050;
           border-radius: 4px;
         `
-      : null};
+      : isValid && !isTouched};
 `;
 
 export const TextAreaStyled = styled.textarea`

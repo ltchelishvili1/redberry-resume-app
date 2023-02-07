@@ -15,8 +15,10 @@ import {
 import {
   CustomLine,
   NameSurnameContainer,
+  PageNum,
   PersonalInfoPageCont,
   Tittle,
+  TittleContainer,
   UploadContainer,
   UploadImage,
   UploadTittle,
@@ -30,13 +32,16 @@ const PersonalInfoPage = () => {
 
   const handleClick = () => {
     if (validateFinalForm(6)) {
-      navigate('/ji')
+      navigate("/fill-resume/page=experience");
     }
   };
 
   return (
     <PersonalInfoPageCont>
-      <Tittle>პირადი ინფო</Tittle>
+      <TittleContainer>
+        <Tittle>{"პირადი ინფო".toLocaleUpperCase()}</Tittle>
+        <PageNum>1/3</PageNum>
+      </TittleContainer>
       <CustomLine></CustomLine>
       <NameSurnameContainer>
         <Input

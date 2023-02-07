@@ -11,6 +11,7 @@ export const FormContextProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("state")) || {}
   );
 
+  
   useEffect(() => {
     localStorage.setItem("state", JSON.stringify(state));
   }, [state]);
@@ -23,8 +24,9 @@ export const FormContextProvider = ({ children }) => {
         setState({
           ...state,
           [vals.name]: {
+            ...vals,
             value: reader.result,
-            isValid: vals.isValid,
+            
           },
         });
       });
@@ -33,8 +35,7 @@ export const FormContextProvider = ({ children }) => {
       setState({
         ...state,
         [vals.name]: {
-          value: vals.value,
-          isValid: vals.isValid,
+          ...vals
         },
       });
     }

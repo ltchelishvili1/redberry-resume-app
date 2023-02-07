@@ -52,8 +52,6 @@ const DisplayPersonalInfo = ({ state }) => {
       <ImageContainer>
         {  state.image && (
         <img src={state.image.value} alt="image" />
- 
-        
         ) }
       </ImageContainer>
     </>
