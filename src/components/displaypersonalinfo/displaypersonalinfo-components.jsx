@@ -9,6 +9,7 @@ import {
   NumberContainer,
   TextContainer,
   ImageContainer,
+  MainContainer,
 } from "./displaypersonalinfo-styles";
 
 import Symbol from "../../assets/@.png";
@@ -18,7 +19,7 @@ const DisplayPersonalInfo = ({ state }) => {
 
 
   return (
-    <>
+    <MainContainer>
       <TextContainer>
         <NameSurnameContainer>
           {state.name && (
@@ -54,7 +55,7 @@ const DisplayPersonalInfo = ({ state }) => {
         <img src={state.image.value} alt="image" />
         ) }
       </ImageContainer>
-    </>
+    </MainContainer>
   );
 };
 

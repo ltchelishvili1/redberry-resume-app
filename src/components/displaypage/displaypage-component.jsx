@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 import { FormContext } from "../../contexts/formcontext";
+
+import DisplayExperiencePage from "../displayexperiencepage/displayexperiencepage";
 import DisplayPersonalInfo from "../displaypersonalinfo/displaypersonalinfo-components";
 import { MainContainer } from "./displaypage.styles";
 
@@ -8,6 +10,7 @@ const DisplayPage = () => {
   return (
     <MainContainer>
       <DisplayPersonalInfo state={state} />
+      <DisplayExperiencePage />
     </MainContainer>
   );
 };

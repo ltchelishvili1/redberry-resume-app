@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import Input from "../../components/input/input-component";
+import { ExperienceContext } from "../../contexts/experiencecontext";
 import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
@@ -11,6 +12,12 @@ import { CustomLine } from "../personalinfopage/personalinfopage-styles";
 import { DatesContainer, ExperienceCont } from "./experiencepage-styles";
 
 const Experience = ({ count, countArr }) => {
+  const { setCount } = useContext(ExperienceContext);
+
+  useEffect(() => {
+    setCount(count);
+  }, [count]);
+
   return (
     <div>
       <Input
@@ -72,6 +79,7 @@ const Experience = ({ count, countArr }) => {
         label="აღწერა"
         initialValid={true}
         name={`epxerienceDescription`}
+        validators={[VALIDATOR_REQUIRE()]}
         count={count}
         countArr={countArr}
       />

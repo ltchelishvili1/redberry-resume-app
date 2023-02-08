@@ -45,7 +45,7 @@ const Input = ({
   const { stateChanger, state } = useContext(FormContext);
   const { experienceState, experienceStateChanger } =
     useContext(ExperienceContext);
-  let value = state[name] || "";
+  let value;
 
   if (sectionName === "experience") {
     if (
@@ -55,10 +55,13 @@ const Input = ({
     ) {
       value = experienceState[count][name];
     }
+  }else{
+   value = state[name] || ""
   }
 
   const [formState, dispatch] = useReducer(FormReducer, INITIAL_STATE);
 
+ 
   const changeHandler = (event) => {
     dispatch({
       type: "Change",
