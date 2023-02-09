@@ -13,6 +13,7 @@ import {
   VALIDATOR_REQUIRE,
 } from "../../utils/validation/validation";
 import {
+  ButtonWrap,
   CustomLine,
   NameSurnameContainer,
   PageNum,
@@ -105,7 +106,7 @@ const PersonalInfoPage = () => {
         name="number"
         validators={[VALIDATOR_REQUIRE(), VALIDATOR_PHONENUMBER()]}
       />
-      <Button text={"შემდეგი"} onClick={handleClick} />
+     <ButtonWrap><Button text={"შემდეგი"} float onClick={handleClick} /></ButtonWrap> 
     </PersonalInfoPageCont>
   );
 };

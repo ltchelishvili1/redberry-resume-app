@@ -6,6 +6,18 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f9f9f9;
+  
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  display: block;
+  background: url(./assets/date.png) no-repeat;
+  width: 18px;
+  height: 20px;
+  border-width: thin;
+  margin: 14px;
 }
 
 code {

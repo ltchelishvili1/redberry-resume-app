@@ -17,6 +17,7 @@ import { FormContext } from "../../contexts/formcontext";
 
 import { FormReducer } from "../../reducers/formreducer/formreducer";
 import { ExperienceContext } from "../../contexts/experiencecontext";
+import { EducationContext } from "../../contexts/educatuincontext";
 
 const INITIAL_STATE = {
   value: "",
@@ -45,6 +46,10 @@ const Input = ({
   const { stateChanger, state } = useContext(FormContext);
   const { experienceState, experienceStateChanger } =
     useContext(ExperienceContext);
+
+  const { educationState, educationStateChanger } =
+    useContext(EducationContext);
+
   let value;
 
   if (sectionName === "experience") {
@@ -55,13 +60,20 @@ const Input = ({
     ) {
       value = experienceState[count][name];
     }
-  }else{
-   value = state[name] || ""
+  } else if ((sectionName = "education")) {
+    if (
+      educationState &&
+      educationState[count] &&
+      educationState[count][name]
+    ) {
+      value = educationState[count][name];
+    }
+  } else {
+    value = state[name] || "";
   }
 
   const [formState, dispatch] = useReducer(FormReducer, INITIAL_STATE);
 
- 
   const changeHandler = (event) => {
     dispatch({
       type: "Change",
@@ -93,11 +105,14 @@ const Input = ({
 
       case "experience":
         experienceStateChanger(formState, count, countArr);
+
+      case "education":
+        educationStateChanger(formState, count, countArr);
+
       default:
     }
 
-    if (formState.sectionName === "default") {
-    }
+ 
   }, [formState]);
   const el =
     element === "input" ? (

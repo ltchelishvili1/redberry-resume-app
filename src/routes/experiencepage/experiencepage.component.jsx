@@ -1,5 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ExperienceContext } from "../../contexts/experiencecontext";
+
+import { useNavigate } from "react-router-dom";
 
 import {
   CustomLine,
@@ -8,12 +10,26 @@ import {
   TittleContainer,
 } from "../personalinfopage/personalinfopage-styles";
 import Experience from "./experiencehelper";
-import { DatesContainer, ExperienceCont } from "./experiencepage-styles";
+import {
+  AddExperienceButton,
+  ButtonContainer,
+  DatesContainer,
+  ExperienceCont,
+} from "./experiencepage-styles";
+import Button from "../../components/button/button-component";
 
 const ExperiencePage = () => {
-  const { validateFinalForm } = useContext(ExperienceContext);
+  const { validateFinalForm, experienceState } = useContext(ExperienceContext);
 
-  const [count, setCount] = useState([0]);
+  const navigate = useNavigate();
+
+  const [count, setCount] = useState(
+    JSON.parse(localStorage.getItem("countArr")) || [0]
+  );
+
+  useEffect(() => {
+    localStorage.setItem("countArr", JSON.stringify(count));
+  }, [count]);
 
   const handleClick = () => {
     if (validateFinalForm(5)) {
@@ -22,6 +38,22 @@ const ExperiencePage = () => {
       setCount(countArr);
     }
   };
+
+  const handleSubmit = () => {
+    if (experienceState.length < count.length && experienceState.length!==0) {
+      //if it is true curnt experience field is untouched and previus is valid
+      navigate("/fill-resume/page=knowledge");
+    } else {
+      if (validateFinalForm(5)) {
+        navigate("/fill-resume/page=knowledge");
+      }
+    }
+  };
+
+const navigateBack = () => {
+  navigate("/fill-resume/page=personal-info");
+}
+
   return (
     <ExperienceCont>
       <TittleContainer>
@@ -32,7 +64,13 @@ const ExperiencePage = () => {
       {count.map((id) => (
         <Experience key={id} count={id} countArr={count} />
       ))}
-      <button onClick={handleClick}>Add Experience</button>
+      <AddExperienceButton onClick={handleClick}>
+        მეტი გამოცდილების დამატება
+      </AddExperienceButton>
+      <ButtonContainer>
+        <Button text={"უკან"} onClick={navigateBack} />
+        <Button text={"შემდეგი"} onClick={handleSubmit} float />
+      </ButtonContainer>
     </ExperienceCont>
   );
 };

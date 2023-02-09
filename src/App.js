@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Route, Routes, Navigate, Link, useLocation } from "react-router-dom";
+import EducationPage from "./routes/educationpage/education-page.component";
 import ExperiencePage from "./routes/experiencepage/experiencepage.component";
 import FillResume from "./routes/fillresume/fillresume-component";
 import PersonalInfoPage from "./routes/personalinfopage/personalinfopage-component";
@@ -15,7 +16,7 @@ const App = () => {
       <Route path="/fill-resume" element={<FillResume />}>
         <Route path="page=personal-info" index element={<PersonalInfoPage />} />
         <Route path="page=experience" element={<ExperiencePage />} />
-        <Route path="page=knowledge" element={<WelcomePage />} />
+        <Route path="page=knowledge" element={<EducationPage />} />
       </Route>
     </Routes>
   );

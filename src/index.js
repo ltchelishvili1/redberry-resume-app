@@ -6,15 +6,18 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import { FormContextProvider } from "./contexts/formcontext";
 import { ExperienceContextProvider } from "./contexts/experiencecontext";
+import { EducationContextProvider } from "./contexts/educatuincontext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <FormContextProvider>
       <ExperienceContextProvider>
-        <Router>
-          <App />
-        </Router>
+        <EducationContextProvider>
+          <Router>
+            <App />
+          </Router>
+        </EducationContextProvider>
       </ExperienceContextProvider>
     </FormContextProvider>
   </React.StrictMode>

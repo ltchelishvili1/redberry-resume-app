@@ -58,3 +58,7 @@ export const PageNum = styled.span`
   transform: translateY(50%);
  
 `
+
+export const ButtonWrap = styled.div`
+  margin-top: 130px;
+`

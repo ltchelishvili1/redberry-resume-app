@@ -16,8 +16,7 @@ import Symbol from "../../assets/@.png";
 import CallSymbol from "../../assets/callsymbol.png";
 
 const DisplayPersonalInfo = ({ state }) => {
-
-
+  if(Object.values(state).filter((val) => val.value === '').length !== 6)
   return (
     <MainContainer>
       <TextContainer>
@@ -33,27 +32,27 @@ const DisplayPersonalInfo = ({ state }) => {
         </NameSurnameContainer>
         {state.email && (
           <EmailContainer>
-            <img src={Symbol} alt="@" />
+            {state.email.value && <img src={Symbol} alt="@" />}
             <p>{state.email?.value}</p>
           </EmailContainer>
         )}
         {state.number && (
           <NumberContainer>
-            <img src={CallSymbol} />
+            {state.number.value && <img src={CallSymbol} />}
             <p>{state.number?.value}</p>
           </NumberContainer>
         )}
         {state.personalDescription && (
           <div>
-            <AboutMe>{"ჩემ შესახებ".toLocaleUpperCase()}</AboutMe>
+            {state.personalDescription.value && (
+              <AboutMe>{"ჩემ შესახებ".toLocaleUpperCase()}</AboutMe>
+            )}
             <Description>{state.personalDescription?.value}</Description>
           </div>
         )}
       </TextContainer>
       <ImageContainer>
-        {  state.image && (
-        <img src={state.image.value} alt="image" />
-        ) }
+        {state.image && <img src={state.image.value} alt="image" />}
       </ImageContainer>
     </MainContainer>
   );

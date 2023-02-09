@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const StyledButton = styled.button`
   display: flex;
@@ -12,9 +12,10 @@ export const StyledButton = styled.button`
   font-weight: 500;
   letter-spacing: 0.08em;
   border-radius: 4px;
-  float: right;
   width: 151px;
-  position: absolute;
-  bottom: 65px;
-  left: calc(57.3% - 150px - 151px);;
+  ${({ float }) =>
+    float &&
+    css`
+      float: right;
+    `};
 `;

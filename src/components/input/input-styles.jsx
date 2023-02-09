@@ -48,7 +48,7 @@ export const TextAreaStyled = styled.textarea`
   border-radius: 4px;
   margin-top: 10px;
   padding: 15px 0 0 15px;
-  max-height: 100px;
+ 
   font-size: 16px;
 
   ${({ isValid, isTouched }) =>

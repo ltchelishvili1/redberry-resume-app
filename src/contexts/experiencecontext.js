@@ -20,14 +20,8 @@ export const ExperienceContextProvider = ({ children }) => {
 
   const experienceStateChanger = (vals, count) => {
     let arr = [...experienceState];
-    let temp = [];
-    if (experienceState[count]) {
-      temp = { ...experienceState[count] };
-    }
-    if (arr[count]) {
-      delete arr[count][""];
-    }
-
+    if (vals.name === "") return;
+   
     arr[count] = {
       ...arr[count],
       [vals.name]: {
@@ -38,7 +32,7 @@ export const ExperienceContextProvider = ({ children }) => {
   };
 
   const validateFinalForm = (amountOfFormInputs) => {
-    return Object.keys(experienceState[count]).length < amountOfFormInputs
+    return !experienceState[count] || Object.keys(experienceState[count]).length < amountOfFormInputs
       ? false
       : Object.keys(experienceState[count])
           .map((key) => experienceState[count][key].isValid)
