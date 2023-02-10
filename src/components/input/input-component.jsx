@@ -7,6 +7,7 @@ import {
   InputStyled,
   Label,
   MainContainer,
+  SelectStyled,
   Span,
   TextAreaStyled,
 } from "./input-styles";
@@ -42,8 +43,9 @@ const Input = ({
   sectionName,
   count,
   countArr,
+  vals,
 }) => {
-  const { stateChanger, state } = useContext(FormContext);
+  const { stateChanger, state, setImg } = useContext(FormContext);
   const { experienceState, experienceStateChanger } =
     useContext(ExperienceContext);
 
@@ -60,7 +62,7 @@ const Input = ({
     ) {
       value = experienceState[count][name];
     }
-  } else if ((sectionName = "education")) {
+  } else if (sectionName === "education") {
     if (
       educationState &&
       educationState[count] &&
@@ -98,22 +100,28 @@ const Input = ({
       });
     }
   }, []);
+
   useEffect(() => {
     switch (formState.sectionName) {
       case "default":
         stateChanger(formState);
+        break;
 
       case "experience":
         experienceStateChanger(formState, count, countArr);
-
+        break;
       case "education":
         educationStateChanger(formState, count, countArr);
+        break;
 
       default:
     }
 
- 
+    if (formState.value.lastModified) {
+      setImg(formState.value);
+    }
   }, [formState]);
+
   const el =
     element === "input" ? (
       <InputFieldContainer>
@@ -143,6 +151,28 @@ const Input = ({
         onChange={changeHandler}
         onBlur={touchHandler}
       />
+    ) : element === "option" ? (
+      <SelectStyled
+        id={id}
+        type={type}
+        placeholder={placeholder}
+        onChange={changeHandler}
+        onBlur={touchHandler}
+        value={value && value.value}
+        isValid={value && value.isValid}
+        isTouched={value && value.isTouched}
+        style={{ ...styles }}
+      >
+        <option value="" disabled selected hidden>
+          აირჩიეთ ხარისხი
+        </option>
+       
+        {vals.map((degree) => (
+          <option id={degree.id} value={degree.id}>
+            {degree.title}
+          </option>
+        ))}
+      </SelectStyled>
     ) : (
       <TextAreaStyled
         id={id}

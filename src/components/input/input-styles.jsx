@@ -16,7 +16,7 @@ export const Label = styled.label`
 export const InputStyled = styled.input`
   width: calc(100% - 12px);
   height: 48px;
-  color: #bcbcbc;
+
   border: 1px solid #bcbcbc;
   border-radius: 4px;
   margin-top: 10px;
@@ -38,17 +38,17 @@ export const InputStyled = styled.input`
           border: 1px solid #ef5050;
           border-radius: 4px;
         `
-      : isValid && !isTouched};
+      : null};
 `;
 
 export const TextAreaStyled = styled.textarea`
   width: calc(100% - 12px);
-  color: #bcbcbc;
+
   border: 1px solid #bcbcbc;
   border-radius: 4px;
   margin-top: 10px;
   padding: 15px 0 0 15px;
- 
+
   font-size: 16px;
 
   ${({ isValid, isTouched }) =>
@@ -63,8 +63,30 @@ export const TextAreaStyled = styled.textarea`
           border-radius: 4px;
         `
       : null}
+`;
 
+export const SelectStyled = styled.select`
+  width: calc(100% - 12px);
 
+  border: 1px solid #bcbcbc;
+  border-radius: 4px;
+  margin-top: 10px;
+  padding-left: 5px;
+  font-size: 16px;
+  height: 52px;
+
+  ${({ isValid, isTouched }) =>
+    isValid && isTouched
+      ? css`
+          border: 1px solid #98e37e;
+          border-radius: 4px;
+        `
+      : !isValid && isTouched
+      ? css`
+          border: 1px solid #ef5050;
+          border-radius: 4px;
+        `
+      : null}
 `;
 
 export const Span = styled.span`

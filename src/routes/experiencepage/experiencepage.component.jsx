@@ -17,12 +17,14 @@ import {
   ExperienceCont,
 } from "./experiencepage-styles";
 import Button from "../../components/button/button-component";
+import BackDrop from "../../utils/modal/BackDrop-component";
 
 const ExperiencePage = () => {
-  const { validateFinalForm, experienceState } = useContext(ExperienceContext);
-
   const navigate = useNavigate();
 
+  const { validateFinalForm, experienceState } = useContext(ExperienceContext);
+
+  const [showModal, setShowModal] = useState(false);
   const [count, setCount] = useState(
     JSON.parse(localStorage.getItem("countArr")) || [0]
   );
@@ -36,26 +38,41 @@ const ExperiencePage = () => {
       let countArr = [...count];
       countArr.push(count[count.length - 1] + 1);
       setCount(countArr);
+    }else{
+      setShowModal(true)
     }
   };
 
   const handleSubmit = () => {
-    if (experienceState.length < count.length && experienceState.length!==0) {
+    if (experienceState.length < count.length && experienceState.length !== 0) {
       //if it is true curnt experience field is untouched and previus is valid
       navigate("/fill-resume/page=knowledge");
     } else {
       if (validateFinalForm(5)) {
         navigate("/fill-resume/page=knowledge");
+      }else{
+        setShowModal(true)
       }
     }
   };
 
-const navigateBack = () => {
-  navigate("/fill-resume/page=personal-info");
-}
+  const navigateBack = () => {
+    navigate("/fill-resume/page=personal-info");
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <ExperienceCont>
+      {showModal && (
+        <BackDrop
+          isVisible
+          onClick={closeModal}
+          text={"Please fill all necessery fields!"}
+        />
+      )}
       <TittleContainer>
         <Tittle>{"გამოცდილება".toLocaleUpperCase()}</Tittle>
         <PageNum>2/3</PageNum>

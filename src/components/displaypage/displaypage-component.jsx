@@ -1,16 +1,24 @@
 import React, { useContext } from "react";
 import { FormContext } from "../../contexts/formcontext";
+import { ExperienceContext } from "../../contexts/experiencecontext";
+import { EducationContext } from "../../contexts/educatuincontext";
 
 import DisplayExperiencePage from "../displayexperiencepage/displayexperiencepage";
 import DisplayPersonalInfo from "../displaypersonalinfo/displaypersonalinfo-components";
+import DisplayEducation from "../displayeducation/displayeducation-component";
+
 import { MainContainer } from "./displaypage.styles";
 
-const DisplayPage = () => {
+const DisplayPage = ({ wholePage }) => {
   const { state } = useContext(FormContext);
+  const { experienceState } = useContext(ExperienceContext);
+  const { educationState } = useContext(EducationContext);
+
   return (
-    <MainContainer>
+    <MainContainer wholePage={wholePage}>
       <DisplayPersonalInfo state={state} />
-      <DisplayExperiencePage />
+      <DisplayExperiencePage experienceState={experienceState} />
+      <DisplayEducation educationState={educationState} />
     </MainContainer>
   );
 };

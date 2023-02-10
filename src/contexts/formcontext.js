@@ -4,38 +4,47 @@ export const FormContext = createContext({
   state: {},
   stateChanger: () => {},
   validateFinalForm: () => {},
+  img: {},
+  setImg: () => {},
 });
 
 export const FormContextProvider = ({ children }) => {
+  const [img, setImg] = useState(
+    JSON.parse(localStorage.getItem("image")) || null
+  );
+
   const [state, setState] = useState(
     JSON.parse(localStorage.getItem("state")) || {}
   );
 
-  
   useEffect(() => {
     localStorage.setItem("state", JSON.stringify(state));
   }, [state]);
 
-  const stateChanger = (vals) => {
+  useEffect(() => {
+    localStorage.setItem("image", JSON.stringify(img));
+  }, [img]);
+
+  const stateChanger = async (vals) => {
     if (vals.name === "") return;
     if (vals.name === "image") {
       const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        setState({
-          ...state,
-          [vals.name]: {
-            ...vals,
-            value: reader.result,
-            
-          },
+      console.log("img") 
+        reader.addEventListener("load", () => {
+          setState({
+            ...state,
+            [vals.name]: {
+              ...vals,
+              value: reader.result.toString(),
+            },
+          });
         });
-      });
       reader.readAsDataURL(vals.value);
     } else {
       setState({
         ...state,
         [vals.name]: {
-          ...vals
+          ...vals,
         },
       });
     }
@@ -53,6 +62,8 @@ export const FormContextProvider = ({ children }) => {
     state,
     stateChanger,
     validateFinalForm,
+    img,
+    setImg,
   };
   return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
 };

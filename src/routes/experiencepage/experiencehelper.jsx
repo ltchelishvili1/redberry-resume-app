@@ -40,7 +40,7 @@ const Experience = ({ count, countArr }) => {
         placeholder={"დამსაქმებელი"}
         label="დამსაქმებელი"
         errorText={"მინიმუმ 2 სიმბოლო"}
-        name={`employeer`}
+        name={`employer`}
         validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH()]}
         count={count}
         countArr={countArr}
@@ -78,7 +78,7 @@ const Experience = ({ count, countArr }) => {
         placeholder={"როლი თანამდებობაზე და ზოგადი აღწერა"}
         label="აღწერა"
         initialValid={true}
-        name={`epxerienceDescription`}
+        name={`description`}
         validators={[VALIDATOR_REQUIRE()]}
         count={count}
         countArr={countArr}

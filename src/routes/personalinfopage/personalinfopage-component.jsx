@@ -85,7 +85,7 @@ const PersonalInfoPage = () => {
         placeholder={"ზოგადი ინფო შენ შესახებ"}
         label="ჩემ შესახებ (არასავალდებულო)"
         initialValid={true}
-        name="personalDescription"
+        name="about_me"
       />
 
       <Input
@@ -103,7 +103,7 @@ const PersonalInfoPage = () => {
         placeholder={"+995 551 12 34 56"}
         label="მობილურის ნომერი"
         errorText={"უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს"}
-        name="number"
+        name="phone_number"
         validators={[VALIDATOR_REQUIRE(), VALIDATOR_PHONENUMBER()]}
       />
      <ButtonWrap><Button text={"შემდეგი"} float onClick={handleClick} /></ButtonWrap> 

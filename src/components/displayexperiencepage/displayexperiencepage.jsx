@@ -1,6 +1,5 @@
-import Counter from "multer/lib/counter";
-import React, { useContext } from "react";
-import { ExperienceContext } from "../../contexts/experiencecontext";
+
+import React  from "react";
 import { CustomLine } from "../../routes/personalinfopage/personalinfopage-styles";
 
 import {
@@ -12,8 +11,8 @@ import {
   Description,
 } from "./displayexperiencepage-styles.jsx";
 
-const DisplayExperiencePage = () => {
-  const { experienceState, count } = useContext(ExperienceContext);
+const DisplayExperiencePage = ({experienceState}) => {
+
 
   // let checkIfExperienceAdded = count != 0 && experienceState.length < count + 1;
 
@@ -36,14 +35,14 @@ const DisplayExperiencePage = () => {
               <PosEmplCont>
                 <span>
                   {experience.position && experience.position.value}
-                  {experience.employeer &&
+                  {experience.employer &&
                     experience.position &&
                     experience.position.value &&
-                    experience.employeer.value &&
+                    experience.employer.value &&
                     ", "}
                 </span>
                 <span>
-                  {experience.employeer && experience.employeer.value}
+                  {experience.employer && experience.employer.value}
                 </span>
               </PosEmplCont>
               <DatesCont>
@@ -60,8 +59,8 @@ const DisplayExperiencePage = () => {
                 <span>{experience.due_date && experience.due_date.value}</span>
               </DatesCont>
               <Description>
-                {experience.epxerienceDescription &&
-                  experience.epxerienceDescription.value}
+                {experience.description &&
+                  experience.description.value}
               </Description>
             </div>
           ))}

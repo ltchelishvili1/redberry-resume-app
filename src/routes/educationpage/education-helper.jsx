@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { DegreeCont } from "./education-page.styles";
 
 import Input from "../../components/input/input-component";
@@ -8,14 +8,33 @@ import {
 } from "../../utils/validation/validation";
 import { EducationContext } from "../../contexts/educatuincontext";
 
-const Education = ({ count, countArr }) => {
-  /*  const { setCount } = useContext(EducationContext);
+import { useHttpClient } from "../../hooks/sendrequesthook";
 
-    useEffect(() => {
-      setCount(count);
-    }, [count]);
-  
-*/
+const Education = ({ count, countArr }) => {
+  const { setCount } = useContext(EducationContext);
+
+  const [degrees, setDegrees] = useState([]);
+
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+  useEffect(() => {
+    setCount(count);
+  }, [count]);
+
+  useEffect(() => {
+    const fetchDegrees = async () => {
+      try {
+        const responseData = await sendRequest(
+          "https://resume.redberryinternship.ge/api/degrees"
+        );
+        setDegrees(responseData);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchDegrees();
+  }, []);
+
   return (
     <div>
       <Input
@@ -32,33 +51,35 @@ const Education = ({ count, countArr }) => {
       />
       <DegreeCont>
         <Input
-          element={"input"}
+          element={"option"}
           sectionName="education"
           type="text"
           label="ხარისხი"
-          name={`degree`}
-          validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH()]}
+          name={`degree_id`}
+          vals={degrees}
+          validators={[VALIDATOR_REQUIRE()]}
           count={count}
           countArr={countArr}
         />
         <Input
           element={"input"}
           sectionName="education"
-          type="text"
-          placeholder={"სასწავლებელი"}
-          label="სასწავლებელი"
+          type="date"
+          placeholder={"დამთავრების რიცხვი"}
+          label="დამთავრების რიცხვი"
           name={`due_date`}
           validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH()]}
           count={count}
           countArr={countArr}
+            styles={{ background: "transparent" }}
         />
       </DegreeCont>
       <Input
         rows={8}
         sectionName="education"
         type="text"
-        placeholder={"სასწავლებელი"}
-        label="სასწავლებელი"
+        placeholder={"განათლების აღწერა"}
+        label="აღწერა"
         errorText={"მინიმუმ 2 სიმბოლო"}
         name={`description`}
         validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH()]}

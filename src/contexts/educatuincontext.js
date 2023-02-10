@@ -36,6 +36,7 @@ export const EducationContextProvider = ({ children }) => {
   };
 
   const validateFinalForm = (amountOfFormInputs) => {
+    
     return !educationState[count] ||
       Object.keys(educationState[count]).length < amountOfFormInputs
       ? false

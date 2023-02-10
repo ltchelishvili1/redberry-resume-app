@@ -36,23 +36,23 @@ const DisplayPersonalInfo = ({ state }) => {
             <p>{state.email?.value}</p>
           </EmailContainer>
         )}
-        {state.number && (
+        {state.phone_number && (
           <NumberContainer>
-            {state.number.value && <img src={CallSymbol} />}
-            <p>{state.number?.value}</p>
+            {state.phone_number.value && <img src={CallSymbol} />}
+            <p>{state.phone_number?.value}</p>
           </NumberContainer>
         )}
-        {state.personalDescription && (
+        {state.about_me && (
           <div>
-            {state.personalDescription.value && (
+            {state.about_me.value && (
               <AboutMe>{"ჩემ შესახებ".toLocaleUpperCase()}</AboutMe>
             )}
-            <Description>{state.personalDescription?.value}</Description>
+            <Description>{state.about_me?.value}</Description>
           </div>
         )}
       </TextContainer>
       <ImageContainer>
-        {state.image && <img src={state.image.value} alt="image" />}
+        {state.image && <img src={state.image.value } alt="image" />}
       </ImageContainer>
     </MainContainer>
   );

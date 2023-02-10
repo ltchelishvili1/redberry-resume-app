@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const PersonalInfoPageCont = styled.div`
   display: block;
@@ -7,7 +7,14 @@ export const PersonalInfoPageCont = styled.div`
 
 export const CustomLine = styled.h1`
   height: 1px;
-  background-color: #1a1a1a;
+  background-color: #C1C1C1;
+  ${({ isLighter }) =>
+    isLighter &&
+    css`
+     background-color: #c8c8c8;
+      
+    `};
+  
 `;
 
 export const Tittle = styled.h1`
