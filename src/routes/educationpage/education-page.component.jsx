@@ -127,7 +127,7 @@ const EducationPage = () => {
       (key) => (finalPersonalState[key] = formState[key].value)
     );
 
-    const resp = await sendData(
+     await sendData(
       finalPersonalState,
       pNumber,
       navigate,

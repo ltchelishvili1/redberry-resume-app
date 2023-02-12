@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
+
 import { DegreeCont } from "./education-page.styles";
 
 import Input from "../../components/input/input-component";
@@ -6,15 +7,17 @@ import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
 } from "../../utils/validation/validation";
+
 import { EducationContext } from "../../contexts/educatuincontext";
 
 import { useHttpClient } from "../../hooks/sendrequesthook";
+
 import LoadSpinner from "../../utils/spinner/LoadSpinner";
 
 const Education = ({ count, countArr }) => {
   const { setCount, degrees, setDegrees } = useContext(EducationContext);
 
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { isLoading, sendRequest } = useHttpClient();
 
   useEffect(() => {
     setCount(count);
@@ -60,7 +63,7 @@ const Education = ({ count, countArr }) => {
           validators={[VALIDATOR_REQUIRE()]}
           count={count}
           countArr={countArr}
-          id= 'temp'
+          id="temp"
         />
         <Input
           element={"input"}

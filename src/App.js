@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
 
-import { Route, Routes, Navigate, Link, useLocation } from "react-router-dom";
-import DisplayPage from "./components/displaypage/displaypage-component";
+import { Route, Routes, Navigate } from "react-router-dom";
+
 import { EducationContext } from "./contexts/educatuincontext";
+
+import DisplayPage from "./components/displaypage/displaypage-component";
 import EducationPage from "./routes/educationpage/education-page.component";
 import ExperiencePage from "./routes/experiencepage/experiencepage.component";
 import FillResume from "./routes/fillresume/fillresume-component";
 import PersonalInfoPage from "./routes/personalinfopage/personalinfopage-component";
-
 import WelcomePage from "./routes/welcomepage/welcomepage-component";
 
 const App = () => {
