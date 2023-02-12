@@ -30,7 +30,8 @@ const sendData = async (
   finalPersonalState,
   pNumber,
   navigate,
-  setIsLoading
+  setIsLoading,
+  setStatus
 ) => {
   setIsLoading(true);
 
@@ -53,6 +54,7 @@ const sendData = async (
     );
 
     if (status === 201) {
+      setStatus(status);
       navigate("/cv-created");
     }
   } catch (err) {
@@ -86,7 +88,8 @@ const EducationPage = () => {
     isLoading: false,
   });
 
-  const { validateFinalForm, educationState } = useContext(EducationContext);
+  const { validateFinalForm, educationState, setStatus } =
+    useContext(EducationContext);
   const { experienceState } = useContext(ExperienceContext);
   const { state: formState } = useContext(FormContext);
 
@@ -124,8 +127,12 @@ const EducationPage = () => {
       (key) => (finalPersonalState[key] = formState[key].value)
     );
 
-    const resp = await sendData(finalPersonalState, pNumber, navigate, () =>
-      dispatch({ type: EDUCATIONREDUCER.TOGGLE_LOADING })
+    const resp = await sendData(
+      finalPersonalState,
+      pNumber,
+      navigate,
+      () => dispatch({ type: EDUCATIONREDUCER.TOGGLE_LOADING }),
+      setStatus
     );
   };
 

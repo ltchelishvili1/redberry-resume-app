@@ -24,3 +24,10 @@ export const LogoCont = styled.img`
   position: absolute;
   bottom: 44px;
 `
+
+export const BackToWelcomeCont = styled.img`
+  position: absolute;
+  top: 45px;
+  left: 48px;
+
+`

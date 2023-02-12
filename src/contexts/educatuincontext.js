@@ -5,9 +5,11 @@ export const EducationContext = createContext({
   educationStateChanger: () => {},
   count: 0,
   setCount: () => {},
-  validateFinalForm: () => {},
+  validatedFinalForm: () => {},
   degrees: [],
   setDegrees: () => {},
+  status: 0,
+  setStatus: () => {},
 });
 
 const initialState = JSON.parse(localStorage.getItem("educationState")) || [];
@@ -16,6 +18,7 @@ export const EducationContextProvider = ({ children }) => {
   const [degrees, setDegrees] = useState([]);
   const [educationState, setEducationState] = useState(initialState);
   const [count, setCount] = useState(0);
+  const [status, setStatus] = useState(0);
 
   useEffect(() => {
     localStorage.setItem("educationState", JSON.stringify(educationState));
@@ -60,6 +63,8 @@ export const EducationContextProvider = ({ children }) => {
     validateFinalForm,
     degrees,
     setDegrees,
+    status,
+    setStatus,
   };
   return (
     <EducationContext.Provider value={value}>

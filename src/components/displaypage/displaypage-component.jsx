@@ -8,10 +8,15 @@ import DisplayExperiencePage from "../displayexperiencepage/displayexperiencepag
 import DisplayPersonalInfo from "../displaypersonalinfo/displaypersonalinfo-components";
 import DisplayEducation from "../displayeducation/displayeducation-component";
 
-import { LogoCont, MainContainer } from "./displaypage.styles";
+import {
+  BackToWelcomeCont,
+  LogoCont,
+  MainContainer,
+} from "./displaypage.styles";
 import SuccesModal from "../../utils/successmodal/succesmodal";
 
-import Logo from '../../assets/logo.png'
+import Logo from "../../assets/logo.png";
+import BackToWelcome from "../../assets/backtowelcome.png";
 
 const DisplayPage = ({ wholePage, success }) => {
   const [isSucces, setIsSucces] = useState(success);
@@ -24,14 +29,23 @@ const DisplayPage = ({ wholePage, success }) => {
     setIsSucces(false);
   }, [setIsSucces]);
 
+  const handleClick = useCallback(() => {
+    localStorage.clear();
+  }, []);
+
   return (
-    <MainContainer wholePage={wholePage}>
-      {isSucces && <SuccesModal onClick={closeSuccess} />}
-      <DisplayPersonalInfo state={state} />
-      <DisplayExperiencePage experienceState={experienceState} />
-      <DisplayEducation educationState={educationState} />
-      <LogoCont src={Logo} alt="" />
-    </MainContainer>
+    <>
+      <a href="/" onClick={handleClick}>
+        <BackToWelcomeCont src={BackToWelcome} alt="close" />{" "}
+      </a>
+      <MainContainer wholePage={wholePage}>
+        {isSucces && <SuccesModal onClick={closeSuccess} />}
+        <DisplayPersonalInfo state={state} />
+        <DisplayExperiencePage experienceState={experienceState} />
+        <DisplayEducation educationState={educationState} />
+        <LogoCont src={Logo} alt="" />
+      </MainContainer>
+    </>
   );
 };
 
