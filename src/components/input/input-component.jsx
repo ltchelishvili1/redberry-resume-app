@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useContext, useState } from "react";
+import React, { useReducer, useEffect, useContext, useCallback } from "react";
 
 import {
   ErrorText,
@@ -7,10 +7,13 @@ import {
   InputStyled,
   Label,
   MainContainer,
+  OptionFieldContainer,
   SelectStyled,
   Span,
   TextAreaStyled,
 } from "./input-styles";
+
+import IsValidIcon from "../../assets/valid.png";
 
 import InvalidInput from "../../assets/Vector.png";
 
@@ -45,7 +48,7 @@ const Input = ({
   countArr,
   vals,
 }) => {
-  const { stateChanger, state, setImg } = useContext(FormContext);
+  const { stateChanger, state } = useContext(FormContext);
   const { experienceState, experienceStateChanger } =
     useContext(ExperienceContext);
 
@@ -76,21 +79,26 @@ const Input = ({
 
   const [formState, dispatch] = useReducer(FormReducer, INITIAL_STATE);
 
-  const changeHandler = (event) => {
-    dispatch({
-      type: "Change",
-      val: element == "file" ? event.target.files[0] : event.target.value,
-      name: name,
-      validators: validators || [],
-      sectionName: sectionName ? sectionName : "default",
-    });
-  };
+  const changeHandler = useCallback(
+    ({ target: { value, files } }) => {
+      const val = element === "file" ? files[0] : value;
 
-  const touchHandler = () => {
+      dispatch({
+        type: "Change",
+        val,
+        name,
+        validators: validators || [],
+        sectionName: sectionName ? sectionName : "default",
+      });
+    },
+    [dispatch, element, name, validators, sectionName]
+  );
+
+  const touchHandler = useCallback(() => {
     dispatch({
       type: "TOUCH",
     });
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     if (!validators) {
@@ -99,7 +107,7 @@ const Input = ({
         val: initialValid,
       });
     }
-  }, []);
+  }, [validators, dispatch, initialValid]);
 
   useEffect(() => {
     switch (formState.sectionName) {
@@ -116,11 +124,7 @@ const Input = ({
 
       default:
     }
-
-    if (formState.value.lastModified) {
-      setImg(formState.value);
-    }
-  }, [formState]);
+  }, [formState, count, countArr]);
 
   const el =
     element === "input" ? (
@@ -141,6 +145,12 @@ const Input = ({
             <Image src={InvalidInput} alt="notvalid" />
           </Span>
         )}
+
+        {type === "date" && value && value.isTouched && value.isValid && (
+          <Span>
+            <Image src={IsValidIcon} alt="valid" />
+          </Span>
+        )}
       </InputFieldContainer>
     ) : element === "file" ? (
       <input
@@ -152,27 +162,42 @@ const Input = ({
         onBlur={touchHandler}
       />
     ) : element === "option" ? (
-      <SelectStyled
-        id={id}
-        type={type}
-        placeholder={placeholder}
-        onChange={changeHandler}
-        onBlur={touchHandler}
-        value={value && value.value}
-        isValid={value && value.isValid}
-        isTouched={value && value.isTouched}
-        style={{ ...styles }}
-      >
-        <option value="" disabled selected hidden>
-          აირჩიეთ ხარისხი
-        </option>
-       
-        {vals.map((degree) => (
-          <option id={degree.id} value={degree.id}>
-            {degree.title}
-          </option>
-        ))}
-      </SelectStyled>
+      <OptionFieldContainer>
+        <SelectStyled
+         
+          type={type}
+          placeholder={placeholder}
+          onChange={changeHandler}
+          onBlur={touchHandler}
+          value={value && value.value}
+          isValid={value && value.isValid}
+          isTouched={value && value.isTouched}
+          style={{ ...styles }}
+          defaultValue= "def"
+        >
+          <option  value="def" disabled hidden>
+            აირჩიეთ ხარისხი
+          </option >
+          
+          {vals.map((degree, index) => (
+            <option id={`${degree.id}-${degree.title}-${index}`} value={degree.id}>
+              {degree.title}
+
+            </option>
+          ))}
+        </SelectStyled>
+        {value && value.isTouched && !value.isValid && (
+          <Span>
+            <Image src={InvalidInput} alt="notvalid" />
+          </Span>
+        )}
+
+        {value && value.isTouched && value.isValid && (
+          <Span>
+            <Image src={IsValidIcon} alt="valid" />
+          </Span>
+        )}
+      </OptionFieldContainer>
     ) : (
       <TextAreaStyled
         id={id}
@@ -188,7 +213,7 @@ const Input = ({
     );
 
   return (
-    <MainContainer>
+    <MainContainer key={`int` + name}>
       <Label
         notValid={value && !value.isValid && value.isTouched && validators}
         htmlFor={id}

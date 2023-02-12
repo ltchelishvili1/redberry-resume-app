@@ -13,5 +13,12 @@ export const FillResumeContainer = styled(SameStyles)`
 
 export const ResumeContainer = styled(SameStyles)`
   background-color: white;
+  
 `;
 
+
+export const Span = styled.span`
+  position: absolute;
+  left: 48px;
+  top: 60px;
+`

@@ -4,6 +4,7 @@ const VALIDATOR_TYPE_EMAIL = "EMAIL";
 const VALIDATOR_TYPE_GEORGIAN = "GEORGIAN";
 const VALIDATOR_TYPE_VALID = "VALID";
 const VALIDATOR_TYPE_PHONENUMBER = "PHONENUMBER";
+const VALIDATOR_TYPE_NOT_SYMBOLS = "SYMBOLS"
 
 export const VALIDATOR_REQUIRE = () => ({ type: VALIDATOR_TYPE_REQUIRE });
 
@@ -16,6 +17,8 @@ export const VALIDATOR_MINLENGTH = () => ({
 export const VALIDATOR_EMAIL = () => ({ type: VALIDATOR_TYPE_EMAIL });
 
 export const VALIDATOR_VALID = () => ({ type: VALIDATOR_TYPE_VALID });
+
+export const VALIDATOR_NOT_SYMBOLS = () => ({type: VALIDATOR_TYPE_NOT_SYMBOLS})
 
 export const VALIDATOR_PHONENUMBER = () => ({
   type: VALIDATOR_TYPE_PHONENUMBER,
@@ -53,10 +56,12 @@ export const validate = (value, validators) => {
         isValid = tempValid1 || tempValid;
 
     */
-      isValid =
-        isValid &&
-        /^\+995[5]/.test(value.replaceAll(" ", "")) &&
-        value.replaceAll(" ", "").length === 13;
+      isValid = isValid && /^\+995 5\d{2} \d{3} \d{3}$/.test(value);
+    }
+    if(validator.type === VALIDATOR_TYPE_NOT_SYMBOLS){
+      //when i send request with special symbols such as ;,' ... it returns 422 so i added this validation
+      console.log(value)
+      isValid = isValid && /^[a-zA-Z0-9]+$/.test(value)
     }
   }
   return isValid;

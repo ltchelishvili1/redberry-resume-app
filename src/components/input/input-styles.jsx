@@ -13,6 +13,8 @@ export const Label = styled.label`
     `};
 `;
 
+
+
 export const InputStyled = styled.input`
   width: calc(100% - 12px);
   height: 48px;
@@ -117,3 +119,7 @@ export const Image = styled.img`
   margin-top: 10px;
   margin-left: 13.5px;
 `;
+
+
+export const OptionFieldContainer = styled(InputFieldContainer)`
+`

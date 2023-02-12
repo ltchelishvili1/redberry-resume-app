@@ -1,12 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useReducer } from "react";
 
 import axios from "axios";
 
-import {
-  AddEducationButton,
-  DegreeCont,
-  EducationCont,
-} from "./education-page.styles";
+import { AddEducationButton, EducationCont } from "./education-page.styles";
 
 import {
   CustomLine,
@@ -22,7 +18,49 @@ import Button from "../../components/button/button-component";
 import { useNavigate } from "react-router-dom";
 import { FormContext } from "../../contexts/formcontext";
 import { ExperienceContext } from "../../contexts/experiencecontext";
-import { useHttpClient } from "../../hooks/sendrequesthook";
+import LoadSpinner from "../../utils/spinner/LoadSpinner";
+import {
+  EDUCATIONREDUCER,
+  educationReducer,
+} from "../../reducers/educationpagereducer.js/educationpagereducer";
+
+const initialState = JSON.parse(localStorage.getItem("countArr1")) || [0];
+
+const sendData = async (
+  finalPersonalState,
+  pNumber,
+  navigate,
+  setIsLoading
+) => {
+  setIsLoading(true);
+
+  try {
+    const res = await fetch(finalPersonalState.image);
+    const blob = await res.blob();
+
+    const { status } = await axios.post(
+      "https://resume.redberryinternship.ge/api/cvs",
+      {
+        ...finalPersonalState,
+        image: blob,
+        phone_number: pNumber,
+      },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (status === 201) {
+      navigate("/cv-created");
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
 export const finalizeInputArrays = (arr) => {
   let finalArr = [];
@@ -42,40 +80,37 @@ export const finalizeInputArrays = (arr) => {
 const EducationPage = () => {
   const navigate = useNavigate();
 
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
-
-  const [dt, setDt] = useState();
+  const [state, dispatch] = useReducer(educationReducer, {
+    showModal: false,
+    count: initialState,
+    isLoading: false,
+  });
 
   const { validateFinalForm, educationState } = useContext(EducationContext);
   const { experienceState } = useContext(ExperienceContext);
-  const { img, state } = useContext(FormContext);
-
-  const [showModal, setShowModal] = useState(false);
-
-  const [count, setCount] = useState(
-    JSON.parse(localStorage.getItem("countArr1")) || [0]
-  );
+  const { state: formState } = useContext(FormContext);
 
   useEffect(() => {
-    localStorage.setItem("countArr1", JSON.stringify(count));
-  }, [count]);
+    localStorage.setItem("countArr1", JSON.stringify(state.count));
+  }, [state.count]);
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (validateFinalForm(4)) {
-      let countArr = [...count];
-      countArr.push(count[count.length - 1] + 1);
-      setCount(countArr);
+      dispatch({
+        type: EDUCATIONREDUCER.UPDATE_COUNT,
+        payload: state.count[state.count.length - 1] + 1,
+      });
     } else {
-      setShowModal(true);
+      dispatch({ type: EDUCATIONREDUCER.TOGGLE_MODAL });
     }
-  };
+  }, [state.count, validateFinalForm]);
 
-  const closeModal = () => {
-    setShowModal(false);
-  };
+  const closeModal = useCallback(() => {
+    dispatch({ type: EDUCATIONREDUCER.TOGGLE_MODAL });
+  }, []);
 
   const handleSubmitForm = async () => {
-    state.phone_number.value = state.phone_number.value.replaceAll(" ", "");
+    let pNumber = formState.phone_number.value.replaceAll(" ", "");
 
     let experienceArray = finalizeInputArrays(experienceState);
     let educationArray = finalizeInputArrays(educationState);
@@ -85,45 +120,26 @@ const EducationPage = () => {
       experiences: experienceArray,
     };
 
-    console.log(dt);
-    Object.keys(state).forEach(
-      (key) => (finalPersonalState[key] = state[key].value)
+    Object.keys(formState).forEach(
+      (key) => (finalPersonalState[key] = formState[key].value)
     );
 
-      console.log(finalPersonalState)
-
-    await fetch(finalPersonalState.image)
-      .then((res) => res.blob())
-      .then((blob) => {
-        axios
-          .post(
-            "https://resume.redberryinternship.ge/api/cvs",
-            { ...finalPersonalState, image: blob },
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          )
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-    console.log(dt);
+    const resp = await sendData(finalPersonalState, pNumber, navigate, () =>
+      dispatch({ type: EDUCATIONREDUCER.TOGGLE_LOADING })
+    );
   };
 
   const handleSubmit = () => {
-    if (educationState.length < count.length && educationState.length !== 0) {
-      //if it is true curnt experience field is untouched and previus is valid
+    if (
+      educationState.length < state.count.length &&
+      educationState.length !== 0
+    ) {
       handleSubmitForm();
     } else {
       if (validateFinalForm(4)) {
         handleSubmitForm();
       } else {
-        setShowModal(true);
+        dispatch({ type: EDUCATIONREDUCER.TOGGLE_MODAL });
       }
     }
   };
@@ -132,8 +148,10 @@ const EducationPage = () => {
     navigate("/fill-resume/page=experience");
   };
 
+  const { isLoading, count, showModal } = state;
   return (
     <EducationCont>
+      {isLoading && <LoadSpinner asOverlay />}
       {showModal && (
         <BackDrop
           isVisible
@@ -148,7 +166,7 @@ const EducationPage = () => {
       <CustomLine></CustomLine>
 
       {count.map((id) => (
-        <Education key={id} count={id} countArr={count} />
+        <Education key={`123${id}`} count={id} countArr={count} />
       ))}
 
       <AddEducationButton onClick={handleClick}>

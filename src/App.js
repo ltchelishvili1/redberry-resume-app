@@ -19,7 +19,7 @@ const App = () => {
         <Route path="page=experience" element={<ExperiencePage />} />
         <Route path="page=knowledge" element={<EducationPage />} />
       </Route>
-      <Route path="/cv-created" element={<DisplayPage wholePage />} />
+      <Route path="/cv-created" element={<DisplayPage wholePage success/>} />
     </Routes>
   );
   return <div>{routes}</div>;

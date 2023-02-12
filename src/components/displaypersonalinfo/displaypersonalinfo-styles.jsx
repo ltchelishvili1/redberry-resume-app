@@ -55,9 +55,15 @@ export const AboutMe = styled.p`
   color: #f93b1d;
   font-weight: 700;
   font-size: 18px;
+  
 `;
 
 export const Description = styled.p`
   font-size: 14px;
   font-weight: 400;
+  span{
+    display:block;
+    width:432px;
+    word-wrap:break-word;
+  }
 `;

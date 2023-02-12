@@ -9,11 +9,10 @@ import {
 import { EducationContext } from "../../contexts/educatuincontext";
 
 import { useHttpClient } from "../../hooks/sendrequesthook";
+import LoadSpinner from "../../utils/spinner/LoadSpinner";
 
 const Education = ({ count, countArr }) => {
-  const { setCount } = useContext(EducationContext);
-
-  const [degrees, setDegrees] = useState([]);
+  const { setCount, degrees, setDegrees } = useContext(EducationContext);
 
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -37,6 +36,7 @@ const Education = ({ count, countArr }) => {
 
   return (
     <div>
+      {isLoading && <LoadSpinner asOverlay />}
       <Input
         element={"input"}
         sectionName="education"
@@ -60,6 +60,7 @@ const Education = ({ count, countArr }) => {
           validators={[VALIDATOR_REQUIRE()]}
           count={count}
           countArr={countArr}
+          id= 'temp'
         />
         <Input
           element={"input"}
@@ -71,7 +72,7 @@ const Education = ({ count, countArr }) => {
           validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH()]}
           count={count}
           countArr={countArr}
-            styles={{ background: "transparent" }}
+          styles={{ background: "transparent" }}
         />
       </DegreeCont>
       <Input

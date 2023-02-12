@@ -1,22 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 
 import Input from "../../components/input/input-component";
 import { ExperienceContext } from "../../contexts/experiencecontext";
 import {
   VALIDATOR_MINLENGTH,
+  VALIDATOR_NOT_SYMBOLS,
   VALIDATOR_REQUIRE,
 } from "../../utils/validation/validation";
 
 import { CustomLine } from "../personalinfopage/personalinfopage-styles";
 
-import { DatesContainer, ExperienceCont } from "./experiencepage-styles";
+import { DatesContainer } from "./experiencepage-styles";
 
 const Experience = ({ count, countArr }) => {
   const { setCount } = useContext(ExperienceContext);
 
   useEffect(() => {
     setCount(count);
-  }, [count]);
+  }, [count,setCount]);
 
   return (
     <div>
@@ -41,7 +42,7 @@ const Experience = ({ count, countArr }) => {
         label="დამსაქმებელი"
         errorText={"მინიმუმ 2 სიმბოლო"}
         name={`employer`}
-        validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH()]}
+        validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(),VALIDATOR_NOT_SYMBOLS()]}
         count={count}
         countArr={countArr}
       />

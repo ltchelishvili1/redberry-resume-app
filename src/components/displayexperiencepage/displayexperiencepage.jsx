@@ -1,21 +1,14 @@
+import React from "react";
 
-import React  from "react";
 import { CustomLine } from "../../routes/personalinfopage/personalinfopage-styles";
 
 import {
   Tittle,
   ExperienceContainer,
-  Span,
-  PosEmplCont,
-  DatesCont,
-  Description,
 } from "./displayexperiencepage-styles.jsx";
+import ExperienceComp from "./singleexperience-component";
 
-const DisplayExperiencePage = ({experienceState}) => {
-
-
-  // let checkIfExperienceAdded = count != 0 && experienceState.length < count + 1;
-
+const DisplayExperiencePage = ({ experienceState }) => {
   return (
     <>
       {
@@ -30,39 +23,8 @@ const DisplayExperiencePage = ({experienceState}) => {
               </span>
             )}
 
-          {experienceState.map((experience) => (
-            <div>
-              <PosEmplCont>
-                <span>
-                  {experience.position && experience.position.value}
-                  {experience.employer &&
-                    experience.position &&
-                    experience.position.value &&
-                    experience.employer.value &&
-                    ", "}
-                </span>
-                <span>
-                  {experience.employer && experience.employer.value}
-                </span>
-              </PosEmplCont>
-              <DatesCont>
-                <span>
-                  {experience.start_date && experience.start_date.value}
-                </span>
-                <span>
-                  {experience.due_date &&
-                    experience.start_date &&
-                    experience.start_date.value &&
-                    experience.due_date.value &&
-                    " - "}
-                </span>
-                <span>{experience.due_date && experience.due_date.value}</span>
-              </DatesCont>
-              <Description>
-                {experience.description &&
-                  experience.description.value}
-              </Description>
-            </div>
+          {experienceState.map((experience, index) => (
+            <ExperienceComp key={`exp` + index} experience={experience} />
           ))}
         </ExperienceContainer>
       }

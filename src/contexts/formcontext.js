@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 
+const InitialState = JSON.parse(localStorage.getItem("state")) || {};
+
 export const FormContext = createContext({
   state: {},
   stateChanger: () => {},
@@ -9,61 +11,53 @@ export const FormContext = createContext({
 });
 
 export const FormContextProvider = ({ children }) => {
-  const [img, setImg] = useState(
-    JSON.parse(localStorage.getItem("image")) || null
-  );
-
-  const [state, setState] = useState(
-    JSON.parse(localStorage.getItem("state")) || {}
-  );
+  const [state, setState] = useState(InitialState);
 
   useEffect(() => {
     localStorage.setItem("state", JSON.stringify(state));
   }, [state]);
 
-  useEffect(() => {
-    localStorage.setItem("image", JSON.stringify(img));
-  }, [img]);
-
   const stateChanger = async (vals) => {
     if (vals.name === "") return;
+
     if (vals.name === "image") {
       const reader = new FileReader();
-      console.log("img") 
-        reader.addEventListener("load", () => {
-          setState({
-            ...state,
-            [vals.name]: {
-              ...vals,
-              value: reader.result.toString(),
-            },
-          });
-        });
       reader.readAsDataURL(vals.value);
+      reader.addEventListener("load", () => {
+        setState((prevState) => ({
+          ...prevState,
+          [vals.name]: {
+            ...vals,
+            value: reader.result.toString(),
+          },
+        }));
+      });
     } else {
-      setState({
-        ...state,
+      setState((prevState) => ({
+        ...prevState,
         [vals.name]: {
           ...vals,
         },
-      });
+      }));
     }
   };
 
   const validateFinalForm = (amountOfFormInputs) => {
-    return Object.keys(state).length < amountOfFormInputs
-      ? false
-      : Object.keys(state)
-          .map((key) => state[key].isValid)
-          .every((el) => el === true);
+    if (Object.keys(state).length < amountOfFormInputs) {
+      return false;
+    }
+    for (const key in state) {
+      if (!state[key].isValid) {
+        return false;
+      }
+    }
+    return true;
   };
 
   const value = {
     state,
     stateChanger,
     validateFinalForm,
-    img,
-    setImg,
   };
   return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
 };

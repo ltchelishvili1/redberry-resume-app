@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useCallback, useReducer } from "react";
 import { ExperienceContext } from "../../contexts/experiencecontext";
 
 import { useNavigate } from "react-router-dom";
@@ -18,51 +18,57 @@ import {
 } from "./experiencepage-styles";
 import Button from "../../components/button/button-component";
 import BackDrop from "../../utils/modal/BackDrop-component";
+import {
+  EXPERIENCEREDUCER,
+  experienceReducer,
+} from "../../reducers/experiencereducer/experiencereducer";
+
+const initialState = {
+  count: JSON.parse(localStorage.getItem("countArr")) || [0],
+  showModal: false,
+};
 
 const ExperiencePage = () => {
   const navigate = useNavigate();
-
   const { validateFinalForm, experienceState } = useContext(ExperienceContext);
-
-  const [showModal, setShowModal] = useState(false);
-  const [count, setCount] = useState(
-    JSON.parse(localStorage.getItem("countArr")) || [0]
-  );
+  const [state, dispatch] = useReducer(experienceReducer, initialState);
 
   useEffect(() => {
-    localStorage.setItem("countArr", JSON.stringify(count));
-  }, [count]);
+    localStorage.setItem("countArr", JSON.stringify(state.count));
+  }, [state.count]);
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (validateFinalForm(5)) {
-      let countArr = [...count];
-      countArr.push(count[count.length - 1] + 1);
-      setCount(countArr);
-    }else{
-      setShowModal(true)
+      dispatch({ type: EXPERIENCEREDUCER.UPDATE_COUNT });
+    } else {
+      dispatch({ type: EXPERIENCEREDUCER.UPDATE_SHOW_MODAL });
     }
-  };
+  }, [validateFinalForm]);
 
-  const handleSubmit = () => {
-    if (experienceState.length < count.length && experienceState.length !== 0) {
-      //if it is true curnt experience field is untouched and previus is valid
+  const handleSubmit = useCallback(() => {
+    if (
+      experienceState.length < state.count.length &&
+      experienceState.length !== 0
+    ) {
       navigate("/fill-resume/page=knowledge");
     } else {
       if (validateFinalForm(5)) {
         navigate("/fill-resume/page=knowledge");
-      }else{
-        setShowModal(true)
+      } else {
+        dispatch({ type: EXPERIENCEREDUCER.UPDATE_SHOW_MODAL });
       }
     }
-  };
+  }, [experienceState.length, state.count.length, validateFinalForm, navigate]);
 
-  const navigateBack = () => {
+  const navigateBack = useCallback(() => {
     navigate("/fill-resume/page=personal-info");
-  };
+  }, [navigate]);
 
-  const closeModal = () => {
-    setShowModal(false);
-  };
+  const closeModal = useCallback(() => {
+    dispatch({ type: "closeModal" });
+  }, []);
+
+  const { showModal, count } = state;
 
   return (
     <ExperienceCont>

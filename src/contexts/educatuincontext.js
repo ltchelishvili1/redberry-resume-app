@@ -6,43 +6,50 @@ export const EducationContext = createContext({
   count: 0,
   setCount: () => {},
   validateFinalForm: () => {},
+  degrees: [],
+  setDegrees: () => {},
 });
 
-
+const initialState = JSON.parse(localStorage.getItem("educationState")) || [];
 
 export const EducationContextProvider = ({ children }) => {
-  const [educationState, setEducationState] = useState(
-    JSON.parse(localStorage.getItem("educationState")) || []
-  );
-
+  const [degrees, setDegrees] = useState([]);
+  const [educationState, setEducationState] = useState(initialState);
   const [count, setCount] = useState(0);
+
   useEffect(() => {
     localStorage.setItem("educationState", JSON.stringify(educationState));
   }, [educationState]);
 
   const educationStateChanger = (vals, count) => {
-    let arr = [...educationState];
     if (vals.name === "") return;
- 
-    arr[count] = {
-      ...arr[count],
-      [vals.name]: {
-        ...vals,
-      },
-    };
 
-    
-    setEducationState(arr);
+    setEducationState((prevState) => {
+      const updatedEducation = [...prevState];
+      updatedEducation[count] = {
+        ...updatedEducation[count],
+        [vals.name]: {
+          ...vals,
+        },
+      };
+
+      return updatedEducation;
+    });
   };
 
   const validateFinalForm = (amountOfFormInputs) => {
-    
-    return !educationState[count] ||
+    if (
+      !educationState[count] ||
       Object.keys(educationState[count]).length < amountOfFormInputs
-      ? false
-      : Object.keys(educationState[count])
-          .map((key) => educationState[count][key].isValid)
-          .every((el) => el === true);
+    ) {
+      return false;
+    }
+    for (const key in educationState[count]) {
+      if (!educationState[count][key].isValid) {
+        return false;
+      }
+    }
+    return true;
   };
 
   const value = {
@@ -51,6 +58,8 @@ export const EducationContextProvider = ({ children }) => {
     count,
     setCount,
     validateFinalForm,
+    degrees,
+    setDegrees,
   };
   return (
     <EducationContext.Provider value={value}>

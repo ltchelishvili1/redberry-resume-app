@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -25,20 +25,40 @@ import {
   UploadTittle,
 } from "./personalinfopage-styles";
 import { FormContext } from "../../contexts/formcontext";
+import BackDrop from "../../utils/modal/BackDrop-component";
 
 const PersonalInfoPage = () => {
   const navigate = useNavigate();
 
-  const { validateFinalForm } = useContext(FormContext);
+  const [showModal, setShowModal] = useState(false);
+
+  const { validateFinalForm, state } = useContext(FormContext);
 
   const handleClick = () => {
-    if (validateFinalForm(6)) {
+    if (
+      state.about_me && state.about_me.value
+        ? validateFinalForm(6)
+        : validateFinalForm(5)
+    ) {
       navigate("/fill-resume/page=experience");
+    }else {
+      setShowModal(true);
     }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
     <PersonalInfoPageCont>
+        {showModal && (
+        <BackDrop
+          isVisible
+          onClick={closeModal}
+          text={"Please fill all necessery fields!"}
+        />
+      )}
       <TittleContainer>
         <Tittle>{"პირადი ინფო".toLocaleUpperCase()}</Tittle>
         <PageNum>1/3</PageNum>
@@ -74,7 +94,7 @@ const PersonalInfoPage = () => {
       </NameSurnameContainer>
       <UploadContainer>
         <UploadTittle>პირადი ფოტოს ატვირთვა</UploadTittle>
-        <UploadImage for="img">ატვირთვა</UploadImage>
+        <UploadImage htmlFor="img">ატვირთვა</UploadImage>
         <span>
           <Input element={"file"} name="image" />
         </span>
@@ -106,7 +126,9 @@ const PersonalInfoPage = () => {
         name="phone_number"
         validators={[VALIDATOR_REQUIRE(), VALIDATOR_PHONENUMBER()]}
       />
-     <ButtonWrap><Button text={"შემდეგი"} float onClick={handleClick} /></ButtonWrap> 
+      <ButtonWrap>
+        <Button text={"შემდეგი"} float onClick={handleClick} />
+      </ButtonWrap>
     </PersonalInfoPageCont>
   );
 };
