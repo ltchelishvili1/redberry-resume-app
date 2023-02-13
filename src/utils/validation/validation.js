@@ -34,7 +34,7 @@ export const validate = (value, validators) => {
       isValid = isValid && value.trim().length >= 2;
     }
     if (validator.type === VALIDATOR_TYPE_EMAIL) {
-      isValid = isValid && /^\S+@redberry.ge$/.test(value);
+      isValid = isValid && /@redberry\.ge$/.test(value);
     }
     if (validator.type === VALIDATOR_TYPE_GEORGIAN) {
       isValid = isValid && /^[აბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ]+$/.test(value);

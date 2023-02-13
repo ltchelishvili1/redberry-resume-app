@@ -34,7 +34,6 @@ const DisplayPersonalInfo = ({ state }) => {
     setResponseParsed(obj);
   }, [responseData]);
 
-
   const { name, surname, email, phone_number, about_me, image } =
     status === 201 && responseData ? responseParsed : state;
 
@@ -59,7 +58,17 @@ const DisplayPersonalInfo = ({ state }) => {
           {phone_number && (
             <NumberContainer>
               {phone_number.value && <img src={CallSymbol} />}
-              <p>{phone_number?.value}</p>
+              <p>
+                {status === 201
+                  ? phone_number?.value.substring(0, 4) +
+                    " " +
+                    phone_number?.value.substring(4, 7) +
+                    " " +
+                    phone_number?.value.substring(7, 10) +
+                    " " +
+                    phone_number?.value.substring(10, 13)
+                  : phone_number?.value}
+              </p>
             </NumberContainer>
           )}
           {about_me && (
