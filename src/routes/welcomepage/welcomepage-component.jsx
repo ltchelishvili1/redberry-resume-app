@@ -1,6 +1,5 @@
-import React, { useCallback } from "react";
+import React, {  useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
 
 import Logo from "../../assets/a.png";
 import License from "../../assets/lic.png";
@@ -15,10 +14,8 @@ import {
 import { Line } from "../../utils/styles/styles";
 
 const WelcomePage = () => {
-  const navigate = useNavigate();
-
-  const handleClick = useCallback(() => {
-    navigate("/fill-resume/page=personal-info");
+  useEffect(() => {
+    localStorage.clear();
   }, []);
 
   return (
@@ -26,7 +23,10 @@ const WelcomePage = () => {
       <LogoContainer>
         <img src={Logo} alt="redberry" />
         <Line></Line>
-        <Button onClick={handleClick}>რეზიუმეს დამატება</Button>
+        <a href="/fill-resume/page=personal-info">
+          {" "}
+          <Button>რეზიუმეს დამატება</Button>
+        </a>
         <Image src={License} alt="redberry" />
       </LogoContainer>
     </WelcomePageContainer>
