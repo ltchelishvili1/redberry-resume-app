@@ -12,7 +12,7 @@ import PersonalInfoPage from "./routes/personalinfopage/personalinfopage-compone
 import WelcomePage from "./routes/welcomepage/welcomepage-component";
 
 const App = () => {
-  const { status } = useContext(EducationContext);
+  const { status, responseData } = useContext(EducationContext);
 
   let routes = (
     <Routes>
@@ -23,8 +23,13 @@ const App = () => {
         <Route path="page=experience" element={<ExperiencePage />} />
         <Route path="page=knowledge" element={<EducationPage />} />
       </Route>
-      {status === 201 && (
-        <Route path="/cv-created" element={<DisplayPage wholePage success />} />
+      {true && (
+        <Route
+          path="/cv-created"
+          element={
+            <DisplayPage wholePage success responseData={responseData} />
+          }
+        />
       )}
     </Routes>
   );

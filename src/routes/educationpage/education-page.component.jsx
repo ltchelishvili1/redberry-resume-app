@@ -31,7 +31,8 @@ const sendData = async (
   pNumber,
   navigate,
   setIsLoading,
-  setStatus
+  setStatus,
+  setResponseData
 ) => {
   setIsLoading(true);
 
@@ -39,7 +40,7 @@ const sendData = async (
     const res = await fetch(finalPersonalState.image);
     const blob = await res.blob();
 
-    const { status } = await axios.post(
+    const { data, status } = await axios.post(
       "https://resume.redberryinternship.ge/api/cvs",
       {
         ...finalPersonalState,
@@ -55,6 +56,8 @@ const sendData = async (
 
     if (status === 201) {
       setStatus(status);
+     
+      setResponseData(data)
       navigate("/cv-created");
     }
   } catch (err) {
@@ -88,7 +91,7 @@ const EducationPage = () => {
     isLoading: false,
   });
 
-  const { validateFinalForm, educationState, setStatus } =
+  const { validateFinalForm, educationState, setStatus, setResponseData } =
     useContext(EducationContext);
   const { experienceState } = useContext(ExperienceContext);
   const { state: formState } = useContext(FormContext);
@@ -112,8 +115,10 @@ const EducationPage = () => {
     dispatch({ type: EDUCATIONREDUCER.TOGGLE_MODAL });
   }, []);
 
+
+
   const handleSubmitForm = async () => {
-    let pNumber = formState.phone_number.value.replaceAll(" ", "");
+    let pNumber =formState.phone_number && formState.phone_number.value.replaceAll(" ", "");
 
     let experienceArray = finalizeInputArrays(experienceState);
     let educationArray = finalizeInputArrays(educationState);
@@ -127,12 +132,13 @@ const EducationPage = () => {
       (key) => (finalPersonalState[key] = formState[key].value)
     );
 
-     await sendData(
+    await sendData(
       finalPersonalState,
       pNumber,
       navigate,
       () => dispatch({ type: EDUCATIONREDUCER.TOGGLE_LOADING }),
-      setStatus
+      setStatus,
+      setResponseData
     );
   };
 

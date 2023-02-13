@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { EducationContext } from "../../contexts/educatuincontext.js";
 
 import {
   PosEmplCont,
@@ -6,8 +7,26 @@ import {
   Description,
 } from "./displayexperiencepage-styles.jsx";
 
-const ExperienceComp = ({ experience }) => {
-  const { position, employer, start_date, due_date, description } = experience;
+const ExperienceComp = ({ experience, index }) => {
+  const { responseData, status } = useContext(EducationContext);
+  const [responseParsed, setResponseParsed] = useState({});
+
+  useEffect(() => {
+    let obj = {};
+    if (responseData && responseData.experiences) {
+      for (let key in responseData.experiences[index]) {
+    
+        obj[key] = {
+          value: responseData.experiences[index][key],
+        };
+      }
+
+      setResponseParsed(obj);
+    }
+  }, [responseData]);
+
+  const { position, employer, start_date, due_date, description } =
+    responseData && status === 201 ? responseParsed : experience;
 
   return (
     <div>

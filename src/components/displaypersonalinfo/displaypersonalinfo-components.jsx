@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import {
   AboutMe,
@@ -14,9 +14,29 @@ import {
 
 import Symbol from "../../assets/@.png";
 import CallSymbol from "../../assets/callsymbol.png";
+import { EducationContext } from "../../contexts/educatuincontext";
 
 const DisplayPersonalInfo = ({ state }) => {
-  const { name, surname, email, phone_number, about_me, image } = state;
+  const [responseParsed, setResponseParsed] = useState({});
+  const { responseData, status } = useContext(EducationContext);
+
+  useEffect(() => {
+    let obj = {};
+    for (let key in responseData) {
+      if (key === "image") {
+        obj.image = state.image;
+      } else {
+        obj[key] = {
+          value: responseData[key],
+        };
+      }
+    }
+    setResponseParsed(obj);
+  }, [responseData]);
+
+
+  const { name, surname, email, phone_number, about_me, image } =
+    status === 201 && responseData ? responseParsed : state;
 
   if (Object.values(state).filter((val) => val.value === "").length !== 6)
     return (
@@ -36,18 +56,20 @@ const DisplayPersonalInfo = ({ state }) => {
               <p>{email?.value}</p>
             </EmailContainer>
           )}
-          {state.phone_number && (
+          {phone_number && (
             <NumberContainer>
               {phone_number.value && <img src={CallSymbol} />}
               <p>{phone_number?.value}</p>
             </NumberContainer>
           )}
-          {state.about_me && (
+          {about_me && (
             <div>
               {about_me.value && (
                 <AboutMe>{"ჩემ შესახებ".toLocaleUpperCase()}</AboutMe>
               )}
-              <Description><span>{about_me?.value}</span></Description>
+              <Description>
+                <span>{about_me?.value}</span>
+              </Description>
             </div>
           )}
         </TextContainer>

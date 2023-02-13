@@ -24,7 +24,7 @@ const DisplayExperiencePage = ({ experienceState }) => {
             )}
 
           {experienceState.map((experience, index) => (
-            <ExperienceComp key={`exp` + index} experience={experience} />
+            <ExperienceComp key={`exp` + index} experience={experience} index ={index}/>
           ))}
         </ExperienceContainer>
       }

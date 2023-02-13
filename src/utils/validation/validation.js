@@ -60,8 +60,7 @@ export const validate = (value, validators) => {
     }
     if(validator.type === VALIDATOR_TYPE_NOT_SYMBOLS){
       //when i send request with special symbols such as ;,' ... it returns 422 so i added this validation
-      console.log(value)
-      isValid = isValid && /^[a-zA-Z0-9]+$/.test(value)
+      isValid = isValid && /^[a-zA-Z0-9აბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ]+$/.test(value)
     }
   }
   return isValid;

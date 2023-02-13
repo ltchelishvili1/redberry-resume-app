@@ -18,12 +18,13 @@ import SuccesModal from "../../utils/successmodal/succesmodal";
 import Logo from "../../assets/logo.png";
 import BackToWelcome from "../../assets/backtowelcome.png";
 
-const DisplayPage = ({ wholePage, success }) => {
+const DisplayPage = ({ wholePage, success,responseData }) => {
   const [isSucces, setIsSucces] = useState(success);
-
   const { state } = useContext(FormContext);
   const { experienceState } = useContext(ExperienceContext);
   const { educationState } = useContext(EducationContext);
+
+  
 
   const closeSuccess = useCallback(() => {
     setIsSucces(false);
@@ -40,9 +41,9 @@ const DisplayPage = ({ wholePage, success }) => {
       </a>
       <MainContainer wholePage={wholePage}>
         {isSucces && <SuccesModal onClick={closeSuccess} />}
-        <DisplayPersonalInfo state={state} />
-        <DisplayExperiencePage experienceState={experienceState} />
-        <DisplayEducation educationState={educationState} />
+        <DisplayPersonalInfo state={state} responseData ={responseData} />
+        <DisplayExperiencePage experienceState={experienceState}  responseData ={responseData}/>
+        <DisplayEducation educationState={educationState}  responseData ={responseData}/>
         <LogoCont src={Logo} alt="" />
       </MainContainer>
     </>

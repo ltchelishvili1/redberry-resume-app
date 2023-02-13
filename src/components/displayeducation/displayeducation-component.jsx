@@ -16,7 +16,7 @@ const DisplayEducation = ({ educationState }) => {
             <Title>{"განათლება".toLocaleUpperCase()}</Title>
 
             {educationState.map((education,index) => (
-              <EducationComp key={`educ` + index} education={education} />
+              <EducationComp key={`educ` + index} education={education} index ={index} />
             ))}
           </span>
         )}

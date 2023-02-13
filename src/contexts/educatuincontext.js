@@ -10,19 +10,39 @@ export const EducationContext = createContext({
   setDegrees: () => {},
   status: 0,
   setStatus: () => {},
+  responseData: {},
+  setResponseData: () => {},
+ 
 });
 
 const initialState = JSON.parse(localStorage.getItem("educationState")) || [];
+const initialStatus = JSON.parse(localStorage.getItem("initialStatus")) || 0;
+const initialResponse = JSON.parse(localStorage.getItem("responseData")) || {};
+const initialDegrees = JSON.parse(localStorage.getItem("degrees")) || [];
 
 export const EducationContextProvider = ({ children }) => {
-  const [degrees, setDegrees] = useState([]);
+  const [degrees, setDegrees] = useState(initialDegrees);
   const [educationState, setEducationState] = useState(initialState);
   const [count, setCount] = useState(0);
-  const [status, setStatus] = useState(0);
+  const [status, setStatus] = useState(initialStatus);
+  const [responseData, setResponseData] = useState(initialResponse);
 
   useEffect(() => {
     localStorage.setItem("educationState", JSON.stringify(educationState));
   }, [educationState]);
+
+  useEffect(() => {
+    localStorage.setItem("initialStatus", JSON.stringify(status));
+  }, [status]);
+
+  useEffect(() => {
+    localStorage.setItem("responseData", JSON.stringify(responseData));
+  }, [responseData]);
+
+  useEffect(() => {
+    localStorage.setItem("degrees", JSON.stringify(degrees));
+  }, [degrees]);
+
 
   const educationStateChanger = (vals, count) => {
     if (vals.name === "") return;
@@ -65,6 +85,9 @@ export const EducationContextProvider = ({ children }) => {
     setDegrees,
     status,
     setStatus,
+    responseData,
+    setResponseData,
+    
   };
   return (
     <EducationContext.Provider value={value}>
