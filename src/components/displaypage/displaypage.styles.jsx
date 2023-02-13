@@ -1,9 +1,10 @@
 import styled, { css } from "styled-components";
 
 export const MainContainer = styled.div`
-  height: auto;
+  height: 850px;
   padding: 48px 80px 44px 75px;
   background-color: white;
+  overflow: scroll;
 
   ${({ wholePage }) =>
     wholePage &&
